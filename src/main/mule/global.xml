@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+
+	<http:listener-config name="e-layer-rjaencobos-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+    <apikit:config name="e-layer-rjaencobos-config" api="resource::d36a1128-e322-46b8-b0ff-0e2971ea1aea:e-layer-rjaencobos:1.0.0:raml:zip:e-layer-rjaencobos.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+	<configuration-properties doc:name="Configuration properties" doc:id="5d319e4d-7904-4491-a941-4c0ff88c9844" file="properties\dev.yaml" />
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="bb9c9e8d-18a6-47d0-b7e3-153db7e808b2" basePath="${process.base}" >
+		<http:request-connection host="${process.url}" />
+	</http:request-config>
+	<api-gateway:autodiscovery apiId="20324219" ignoreBasePath="false" doc:name="API Autodiscovery" doc:id="ccf56b0b-3fa8-4e59-8d49-07601a8e6482" flowRef="e-layer-rjaencobos-main" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="d8c2f713-9296-4ab9-8a8d-0c496a1d6c38" file="properties\dev.yaml" key="${secure.key}" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+    
+	
+
+</mule>
